@@ -7,4 +7,4 @@ and data visualization is presented here.
 
 Thank you for following my work!
 
-Wish you a plasent life! Katica
+Wish you a plasent day! Katica

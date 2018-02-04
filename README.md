@@ -11,12 +11,34 @@ Data visualization
 is presented here.
 
 ### Learning Excel&Tableau
+https://public.tableau.com/profile/katica.ristic#!/
+
 
 ### Learning on Coursera - Data Science Specialization
+https://www.coursera.org/specializations/jhu-data-science
+
 
 ### Learning on DataCamp - Python for Data Science
+https://www.datacamp.com/tracks/data-scientist-with-python
+
+### Learning SQL on Udemy - The Complete SQL Bootcamp
+https://www.udemy.com/the-complete-sql-bootcamp/
 
 ### Learning on Edx - Microsoft Professional Program for Data Science track
+https://academy.microsoft.com/en-us/tracks/data-science
+
+
+### Reading books:  
+
+An Introduction to Statistical Learning with Applications in R ( Springer )  
+Gareth James • Daniela Witten • Trevor Hastie Robert Tibshirani
+
+
+FUNDAMENTALS OF Database Systems  
+http://iips.icci.edu.iq/images/exam/databases-ramaz.pdf
+
+Computational and Inferential Thinking - The Foundations of Data Science ( Python )
+https://ds8.gitbooks.io/textbook/content/
 
 
 Thank you for following my work!

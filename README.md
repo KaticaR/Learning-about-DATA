@@ -10,13 +10,13 @@ Data visualization
 
 is presented here.
 
-## Learning Excel&Tableau
+### Learning Excel&Tableau
 
-## Learning on Coursera - Data Science Specialization
+### Learning on Coursera - Data Science Specialization
 
-## Learning on DataCamp - Python for Data Science
+### Learning on DataCamp - Python for Data Science
 
-## Learning on Edx - Microsoft Professional Program for Data Science track
+### Learning on Edx - Microsoft Professional Program for Data Science track
 
 
 Thank you for following my work!

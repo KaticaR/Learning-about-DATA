@@ -43,6 +43,6 @@ https://ds8.gitbooks.io/textbook/content/
 
 Thank you for following my work!
 
-Wish you a plasent day!   
+Wish you a pleasent day!   
 
 Katica Ristic

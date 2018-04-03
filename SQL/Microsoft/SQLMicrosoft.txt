@@ -1,0 +1,234 @@
+
+
+MICROSOFT PROFESSIONAL PROGRAM FOR
+DATA SCIENCE TRACK
+
+
+
+
+FINAL ASSESSMENT - QUERY RELATIONAL DATA ( T-sql ) 
+
+
+
+
+
+/* Select the product ID, product name, and unit price of 
+   all products in the Products table. 
+   Sort your results by number of units in stock, from greatest to least.
+   Skip the first 10 results and get the next 5 after that. */
+
+
+
+SELECT ProductID, ProductName, UnitPrice
+
+FROM DBO.Products
+
+ORDER BY UnitsInStock DESC
+
+OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+
+
+
+
+
+
+
+
+/* Display the first name, employee ID and birthdate (as Unicode in ISO 8601 format) for each employee in the Employees table.
+   Each result should be a single string in the following format, where each <<value>> is replaced by the appropriately converted value:
+   <<FirstName>> has an EmployeeID of <<EmployeeID>> and was born <<BirthDate>> */
+
+
+
+SELECT FirstName + ' has an EmployeeID of ' + CONVERT(NVARCHAR(30),EmployeeID) + ' and was born ' + CONVERT(NVARCHAR(30),BirthDate,126)
+
+FROM DBO.Employees;
+
+
+
+
+
+
+
+
+/*Using the Suppliers table, select the company name, 
+  and display 'outdated' if the company has a fax number, 
+  or 'modern' if it doesn't. 
+
+Alias the result of the CASE expression to Status.*/
+
+
+
+SELECT CompanyName, 'Status' =
+ 
+    CASE
+        
+	WHEN Fax IS NULL THEN 'outdated'
+        
+	ELSE 'modern'
+    
+     END
+
+FROM DBO.Suppliers;
+
+
+
+
+
+
+/*Get the product name and unit price of products 
+  from the Products table which have a unit price greater    
+  than the average unit price from the Order Details table.*/
+
+
+
+
+SELECT P.ProductName, P.UnitPrice
+
+FROM Products AS P
+
+WHERE P.UnitPrice > 
+        
+		(SELECT AVG(UnitPrice)
+
+	         FROM [Order Details]
+        
+		);
+
+
+
+
+
+ /* Get the first name and employee ID for employees 
+    who were associated with orders which shipped from the USA.*/
+
+
+
+
+SELECT FirstName, EmployeeID
+
+FROM DBO.Employees
+
+WHERE EmployeeID IN
+ 
+            (  SELECT EmployeeID
+  
+              FROM DBO.Orders
+              
+		WHERE ShipCountry = 'USA'
+
+             );
+
+
+
+
+
+/*Select the order ID, shipped date, 
+  and then the season aliased as ShippedSeason. 
+  1 ( Jan ) - 'Winter', 2. (Feb) - 'Winter', 
+  3. MArt - 'Spring', 'Spring', 'Spring', 
+  'Summer', 'Summer', 'Summer', '
+   Autumn', 'Autumn', 'Autumn', 
+  'Winter'*/
+
+
+SELECT  OrderID,
+
+        ShippedDate,
+
+        CHOOSE( MONTH(ShippedDate),
+
+        'Winter', 'Winter',
+
+        'Spring', 'Spring', 'Spring',
+
+        'Summer', 'Summer', 'Summer',
+
+        'Autumn', 'Autumn', 'Autumn', 
+
+        'Winter' ) AS ShippedSeason 
+
+FROM DBO.Orders
+
+WHERE ShippedDate IS NOT NULL;
+
+
+
+
+
+
+
+
+/*Your first column should be the country, 
+  and the second column the total quantity 
+  ordered by that country, aliased as TotalQuantity.*/
+
+
+
+
+SELECT c.Country , SUM(od.Quantity) AS TotalQuantity
+
+FROM DBO.Customers AS c
+
+JOIN DBO.Orders AS o
+    
+	ON c.CustomerID = o.CustomerID
+
+JOIN [Order Details] AS od
+    
+	ON o.OrderID = od.OrderID
+
+GROUP BY ROLLUP(c.Country)
+
+
+
+
+
+
+
+/*From the Customers table, select the country, contact title, 
+  and count of that contact title aliased as Count, 
+  grouped by country and contact title (in that order).
+  Then add a column called Legend, which shows one of two things:
+  	When the GROUPING_ID is 0, show '' (i.e., nothing)
+	When the GROUPING_ID is 1, show Subtotal for << Country >>' */
+
+
+
+SELECT Country, ContactTitle, COUNT(ContactTitle) AS Count,
+
+    CASE
+ 
+       WHEN GROUPING_ID(Country, ContactTitle) = 0 THEN ''
+
+        WHEN GROUPING_ID(Country, ContactTitle) = 1 THEN 'Subtotal for ' + CAST(Country AS VARCHAR)
+
+    END AS Legend
+
+FROM DBO.Customers
+
+GROUP BY ROLLUP(Country, ContactTitle)
+
+
+
+
+
+
+
+/* Convert the following query to be pivoted.
+
+	SELECT CategoryID, AVG(UnitPrice)
+	FROM Products
+	GROUP BY CategoryID; */
+
+
+SELECT 'Average Unit Price' AS 'Per Category', 
+        [1],[2],[3],[4],[5],[6],[7],[8]
+FROM
+    ( SELECT CategoryID, UnitPrice
+      FROM Products
+    ) AS SourceTable
+PIVOT
+    ( AVG(UnitPrice)
+      FOR CategoryID IN ([1],[2],[3],[4],[5],[6],[7],[8])
+    ) AS PivotTable 

@@ -1,0 +1,581 @@
+---
+title: "Tests for Tijana"
+author: "Katica Ristic"
+date: "May 28, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r DATAload, echo = FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+## loading data
+setwd("D:/MathJob/Tijana")
+## pacijenti <- read.csv("PacijentiCSV.csv")
+## attach(pacijenti)
+## data <- pacijenti[PatientControl == 'patient',]
+data <- read.csv("PacijentiCSV.csv")
+attach(data)
+
+
+## loading packages
+library("dplyr")
+library("ggpubr")
+library("ggplot2")
+##library("cowplot")
+library("nortest")
+library("PoweR")
+library("gridExtra")
+library("knitr")
+library("markdown")  
+library("rmarkdown") 
+library("ggthemes")
+library("scales")
+
+
+
+```
+
+
+
+## Do we need to transform the data?
+
+
+If we want use Test for Association/Correlation Between Paired Samples (`cor.test in R`) for caluculating the **Pearson coefficient** and **t - test** for determening the diference between patient and control group, we have to investigate if the data is close enough to normal. In that purpose a **D'Agostino - Pearson** normality test is used.  
+
+
+```{r ,echo = FALSE}
+
+d <- data.frame(statcompute(6,data= data[,3], levels = 0.05)$pvalue,
+                statcompute(6,data= data[,4], levels = 0.05)$pvalue,
+                statcompute(6,data= data[,5], levels = 0.05)$pvalue,
+                statcompute(6,data= data[,8], levels = 0.05)$pvalue,
+                statcompute(6,data= data[,10], levels = 0.05)$pvalue,
+            row.names = " p - value ")
+
+kable(d,col.names =  c("eGFR", "ADC cortex", "ADC medulla", "ADC whole kidney", "ADC CMD"),
+        caption = "D'Agostino - Pearson normality test.")
+
+
+
+```
+
+All the variables, except ADC CMD, have significant p - value (less then 0.05), so we **reject** the null hypothesis: **"Data is normally distributed"**. Before we conclude that the data needs to be transformed, using the residuals of linear regression model (LRM) will help us determen how well the data is described by the linear model. If the residuals are normaly distributed with the mean 0, then LRM describes the data well enough even if the data does not satisfies the property of normal distribution. For the t - test the transformation of the data has to be done.
+
+```{r residuals, echo = FALSE, results='asis'}
+
+r1 <- residuals(lm(ADCcortex~eGFR),type = "pearson")
+r2 <- residuals(lm(ADCmedulla~eGFR),type = "pearson")
+r3 <- residuals(lm(ADCwholekidney~eGFR),type = "pearson")
+r4 <- residuals(lm(ADCCMD~eGFR),type = "pearson")
+
+
+
+d <- data.frame(c(mean(r1),statcompute(6,data = r1, levels = 0.05)$pvalue),
+                c(mean(r2),statcompute(6,data = r2, levels = 0.05)$pvalue),
+                c(mean(r3),statcompute(6,data = r3, levels = 0.05)$pvalue),
+                c(mean(r4),statcompute(6,data = r4, levels = 0.05)$pvalue),
+                row.names = c("Residual mean"," p - value ")
+                ) 
+
+kable(d,col.names = c("ADC cortex", "ADC medulla", "ADC whole kidney", "ADC CMD"),
+        caption = "D'Agostino - Pearson normality test for residuals.")
+
+```
+
+All the **residuals** are centered around 0 and all the p - values, except ADC CMD, are less then 0.05, so they are **not normaly distributed around the mean** ( in this case 0 ). This suggests that the transformation of the data is needed. If eGFR is **squared** and if for all dependent variables, except ADC CMD, **reciplotial value** is used than normality property of the data is satisfied.
+
+```{r ,echo = FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+
+d <- data.frame(statcompute(6,data= data[,3]*data[,3], levels = 0.05)$pvalue,
+                statcompute(6,data= 1/data[,4], levels = 0.05)$pvalue,
+                statcompute(6,data= 1/data[,5], levels = 0.05)$pvalue,
+                statcompute(6,data= 1/data[,8], levels = 0.05)$pvalue,
+                statcompute(6,data= data[,10], levels = 0.05)$pvalue,
+            row.names = " p - value ")
+
+kable(d,col.names =  c("eGFR*eGFR", "1/ADC cortex", "1/ADC medulla", "1/ADC whole kidney", "ADC CMD"),
+        caption = "D'Agostino - Pearson normality test for transformed data.")
+
+
+
+```
+
+Now all the variable are close enough to **normal**, which p - value greater than 0.05 suggests. Let us see if the residuals have improved.     
+
+        
+        
+------
+        
+
+    
+```{r residuals log, echo = FALSE}
+
+
+
+r1 <- residuals(lm(1/ADCcortex~eGFR*eGFR),type = "pearson")
+r2 <- residuals(lm(1/ADCmedulla~eGFR*eGFR),type = "pearson")
+r3 <- residuals(lm(1/ADCwholekidney~eGFR*eGFR),type = "pearson")
+r4 <- residuals(lm(ADCCMD~eGFR*eGFR),type = "pearson")
+
+
+
+d <- data.frame(c(mean(r1),statcompute(6,data = r1, levels = 0.05)$pvalue),
+                c(mean(r2),statcompute(6,data = r2, levels = 0.05)$pvalue),
+                c(mean(r3),statcompute(6,data = r3, levels = 0.05)$pvalue),
+                c(mean(r4),statcompute(6,data = r4, levels = 0.05)$pvalue),
+                row.names = c("Residual mean"," p - value ")
+                ) 
+
+kable(d,col.names = c( "1/ADC cortex", "1/ADC medulla", "1/ADC whole kidney", "ADC CMD"),
+      caption = "D'Agostino - Pearson normality test for residuals of transformed data.")
+
+```
+
+All the p - values are now much greater tnan 0.05, so the **residuals are normaly distributed around 0**. 
+
+
+## Pearson coefficient 
+
+
+
+
+
+
+After transforming the data, except ADC CMD, Pearson coefficient can be calculated ( **df = 92** ).
+
+```{r cortest for transformed data, echo = FALSE}
+
+d <- data.frame(c(cor.test(eGFR*eGFR,1/ADCcortex)[[4]],cor.test(eGFR*eGFR,1/ADCcortex)[[3]]),
+                c(cor.test(eGFR*eGFR,1/ADCmedulla)[[4]],cor.test(eGFR*eGFR,1/ADCmedulla)[[3]]),
+                c(cor.test(eGFR*eGFR,1/ADCwholekidney)[[4]],cor.test(eGFR*eGFR,1/ADCwholekidney)[[3]]),
+                c(cor.test(eGFR*eGFR,ADCCMD)[[4]],cor.test(eGFR*eGFR,ADCCMD)[[3]]),
+                row.names = c("Pearson Coefficient","p-value")
+                )
+
+kable(d, col.names = c("1/ADC cortex", "1/ADC medulla", "1/ADC whole kidney", "ADC CMD"),
+      caption = "Pearson coefficients with p - values after data transformation ")
+
+```
+
+All the coefficients, **except ADC CDM**, are **statistically significant**, meaning that they have p - values less then 0.05 ( Pearson coefficient -0.2998056 for reciprocal transformed ADC cortex is highly statistically significant with p value of 0.0033282 ). For 1/ADC cortex and 1/ADC whole kidney p - values are less than 0.01 which is considered **hightly significant**. Reciprocal transformation changes the sign of the Pearson coefficients, so let us confirm that by calculating the coefficients before transformation. 
+
+```{r cortest, echo = FALSE}
+
+d <- data.frame(c(cor.test(eGFR,ADCcortex)[[4]],cor.test(eGFR,ADCcortex)[[3]]),
+                c(cor.test(eGFR,ADCmedulla)[[4]],cor.test(eGFR,ADCmedulla)[[3]]),
+                c(cor.test(eGFR,ADCwholekidney)[[4]],cor.test(eGFR,ADCwholekidney)[[3]]),
+                c(cor.test(eGFR,ADCCMD)[[4]],cor.test(eGFR,ADCCMD)[[3]]),
+                row.names = c("Pearson Coefficient","p-value")
+                )
+
+kable(d, col.names = c("ADC cortex", "ADC medulla", "ADC whole kidney", "ADC CMD"),
+      caption = "Pearson coefficients with p - values before data transformation ")
+
+```
+
+
+
+```{r cortest diff, echo = FALSE}
+
+d <- data.frame((cor.test(eGFR*eGFR,1/ADCcortex)[[4]]+cor.test(eGFR,ADCcortex)[[4]])*100,
+                (cor.test(eGFR*eGFR,1/ADCmedulla)[[4]]+cor.test(eGFR,ADCmedulla)[[4]])*100,
+                abs(cor.test(eGFR*eGFR,1/ADCwholekidney)[[4]]+cor.test(eGFR,ADCwholekidney)[[4]])*100,
+                (cor.test(eGFR,ADCCMD)[[4]]-cor.test(eGFR*eGFR,ADCCMD)[[4]])*100,
+                row.names = "Difference in %"
+                )
+
+## kable(d, col.names = c("ADC cortex", "ADC medulla", "ADC whole kidney", "ADC CMD"),
+     ## caption = "Difference in Pearson coefficient before and after data transformation in %")
+
+```
+
+
+The difference of Pearson coefficients before and after data transformation is less than 1%, which indicates that by transforming the data **the strength of the linear relationship didn't change only the direction of the slope did**.
+
+Pearson coefficient for ADC CMD was not statistically significant ( p - value greater than 0.05 ), meaning that there is no statistical evidence of linear relationship between eGFR and ADC CMD. Let us now calculate the **Spearman coefficient** for ADC CMD, to see if there is **monotonic relationship** between eGFR and ADC CMD. This coefficient can be calculated for data which is not normally distributed and it is not changed by data transformation like Pearson coefficient is. 
+
+```{r spearman, echo = FALSE,warning = FALSE, cache = FALSE, message = FALSE}
+
+d <- data.frame(c(cor.test(eGFR,ADCCMD,method = "spearman")[[4]],
+                  cor.test(eGFR,ADCCMD,method = "spearman")[[3]]),
+                row.names = c("Spearman coefficient","p - value")
+                )
+
+kable(d, col.names ="ADC CMD",
+      caption = "Spearman coefficient with p - value for ADC CMD ")
+
+```
+
+The p - value 0.3217985 for Spearman coefficient 0.1032984 is **not statistically significant**, so there is **no statistical evidence of monotonic relationship**. Even thought no statistical significant coefficient was found, **causality or some other type of relationship** could **still exist**.   
+
+
+## T test for comparing the means of the patients and the control group
+
+
+Data was collected from **84 patients** and **10 control - healthy individuals**.
+
+```{r f test, echo=FALSE}
+
+patients <- data[PatientControl == 'patient',]
+control <- data[PatientControl == 'contol group',]
+
+
+pvalue <- data.frame( c(var.test(patients[,4],control[,4], alternative = 'two.sided')[[1]],
+                        var.test(patients[,4],control[,4], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      c(var.test(patients[,5],control[,5], alternative = 'two.sided')[[1]],
+                        var.test(patients[,5],control[,5], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      c(var.test(patients[,8],control[,8], alternative = 'two.sided')[[1]],
+                        var.test(patients[,8],control[,8], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      c(var.test(control[,10],patients[,10], alternative = 'two.sided')[[1]],
+                        var.test(control[,10],patients[,10], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      row.names = c('F','p-value','Equal/Unequal')
+                      
+                    )
+## kable(pvalue, col.names = c("ADC cortex", "ADC medulla", "ADC whole kidney", "ADC CMD"),
+##      caption = "Comparison of variences with F test for patients and control group before transformation ")
+
+```
+
+
+
+
+```{r f test trans, echo=FALSE}
+
+
+varience <- data.frame(c(var(patients[,4]),var(control[,4])),
+                       c(var(patients[,5]),var(control[,5])),
+                       c(var(patients[,8]),var(control[,8])),
+                       c(var(patients[,10]),var(control[,10])),
+                       row.names = c('Patient group', 'Control group')
+                       )
+
+## c(var(1/patients[,4])>var(1/control[,4]),
+  ## var(1/patients[,5])>var(1/control[,5]),
+  ## var(1/patients[,8])>var(1/control[,8]),
+  ## var(patients[,10])>var(control[,10]))
+
+## answer TRUE  TRUE TRUE FALSE
+
+## kable(varience, col.names = c("ADC cortex", "ADC medulla", "ADC whole kidney", "ADC CMD"),
+   ##    caption = "Variences for patients and control group for row data")
+
+
+pvalue <- data.frame( c(var.test(1/patients[,4],1/control[,4], alternative = 'two.sided')[[2]][1],
+                        var.test(1/patients[,4],1/control[,4], alternative = 'two.sided')[[2]][2],
+                        var.test(1/patients[,4],1/control[,4], alternative = 'two.sided')[[1]],
+                        var.test(1/patients[,4],1/control[,4], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      c(var.test(1/patients[,5],1/control[,5], alternative = 'two.sided')[[2]][1],
+                        var.test(1/patients[,5],1/control[,5], alternative = 'two.sided')[[2]][2],
+                        var.test(1/patients[,5],1/control[,5], alternative = 'two.sided')[[1]],
+                        var.test(1/patients[,5],1/control[,5], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      c(var.test(1/patients[,8],1/control[,8], alternative = 'two.sided')[[2]][1],
+                        var.test(1/patients[,8],1/control[,8], alternative = 'two.sided')[[2]][2],
+                        var.test(1/patients[,8],1/control[,8], alternative = 'two.sided')[[1]],
+                        var.test(1/patients[,8],1/control[,8], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      c(var.test(control[,10],patients[,10], alternative = 'two.sided')[[2]][1],
+                        var.test(control[,10],patients[,10], alternative = 'two.sided')[[2]][2],
+                        var.test(control[,10],patients[,10], alternative = 'two.sided')[[1]],
+                        var.test(control[,10],patients[,10], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      row.names = c(' Num df','Denom df','F','p-value','Equal/Unequal')
+                      
+                    )
+kable(pvalue, col.names = c("1/ADC cortex", "1/ADC medulla", "1/ADC whole kidney", "ADC CMD"),
+      caption = "Comparison of variences with F test for patients and control group after transformation")
+
+```
+
+
+Notice that **numerator degrees of freedom** ( **Num df** ) and **denominator degrees of freedom** ( **Denom df** ) will change depending of the variances of the groups. We have to teke care that the variance of the first group is greater from the variance of the second group, because F is calculated by dividing the variances.
+
+```{r critical F PC, echo=FALSE}
+
+
+
+d <- data.frame(c('83','9',round(qf(c(0.025,0.975),83,9),7)),
+                c('9','83',round(qf(c(0.025,0.975),9,83),7)),
+                row.names = c('Num df','Denom df','Critical F lower','Critical F upper')
+                )
+
+kable(d, col.names = c("",""),caption = 'Critical F values')
+
+```
+
+  So, if we look at the **Table 8.** and **Table 9.** for reciplocal transformed ADC cortex, with **numerator degrees of freedom 83** and **denominator degrees of freedom 9**, F value is **1.6109471** which is **lower** than upper critical F value **3.4176039** indicating that we **fail to reject the null hypothesis that: ' Groups have the same variances '**. **P value** of **0.447613** also indicates that we **fail to reject the null hypothesis**. 
+
+```{r t test trans, echo=FALSE}
+
+pvalue <- data.frame( c(t.test(1/patients[,4],1/control[,4],var.equal = TRUE)[[1]],
+                        t.test(1/patients[,4],1/control[,4],var.equal = TRUE)[[3]],
+                        'Equal means'),
+                      
+                      c(t.test(1/patients[,5],1/control[,5],var.equal = TRUE)[[1]],
+                        t.test(1/patients[,5],1/control[,5],var.equal = TRUE)[[3]],
+                        'Equal means'),
+                      
+                      c(t.test(1/patients[,8],1/control[,8],var.equal = TRUE)[[1]],
+                        t.test(1/patients[,8],1/control[,8],var.equal = TRUE)[[3]],
+                        'Equal means'),
+                      
+                      c(t.test(patients[,10],control[,10], var.equal = TRUE)[[1]],
+                        t.test(patients[,10],control[,10], var.equal = TRUE)[[3]],
+                        'Equal means'),
+                      row.names = c('t value','p-value','Equal/Unequal')
+                      
+                    )
+kable(pvalue, col.names = c("1/ADC cortex", "1/ADC medulla", "1/ADC whole kidney", "ADC CMD"),
+      caption = "Comparison of means with t test ( with equal variences and df = 92) for patients and control group after transformation")
+
+## round(qt(c(0.025,0.975),92),7) critical values for t value 
+## [1] -1.986086  1.986086
+
+
+```
+
+To **reject** the null hypothesis: " **Groups have equal means** " **p value** has to be **less than 0.05** and **t value greater** than critical value of **1.986086** or **less** than negative critical value **-1.986086**. For instance reciprocal transformed ADC cortex has t value 0.0310511 less than critical value 1.986086 and its p value 0.9752961 much greater than 0.05, so we fail to reject the null hypothesis. 
+
+## T test for comparing the means of male and female group
+
+
+
+```{r f test MF, echo=FALSE}
+
+male <- data[ MF == 'M',]
+female <- data[ MF == 'F',]
+
+
+pvalue <- data.frame( c(var.test(male[,4],female[,4], alternative = 'two.sided')[[1]],
+                        var.test(male[,4],female[,4], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      c(var.test(female[,5],male[,5], alternative = 'two.sided')[[1]],
+                        var.test(female[,5],male[,5], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      c(var.test(male[,8],female[,8], alternative = 'two.sided')[[1]],
+                        var.test(male[,8],female[,8], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      c(var.test(male[,10],female[,10], alternative = 'two.sided')[[1]],
+                        var.test(male[,10],female[,10], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      row.names = c('F','p-value','Equal/Unequal')
+                      
+                    )
+##kable(pvalue, col.names = c("ADC cortex", "ADC medulla", "ADC whole kidney", "ADC CMD"),
+  ##    caption = "Comparison of variences with F test for male and female group before transformation ")
+
+```
+
+Data was collected from **44 female** and **50 male**. 
+
+
+```{r f test trans MF, echo=FALSE}
+
+
+varience <- data.frame(c(var(male[,4]),var(female[,4])),
+                       c(var(male[,5]),var(female[,5])),
+                       c(var(male[,8]),var(female[,8])),
+                       c(var(male[,10]),var(female[,10])),
+                       row.names = c('Male group', 'Female group')
+                       )
+
+## kable(varience, col.names = c("ADC cortex", "ADC medulla", "ADC whole kidney", "ADC CMD"),
+##       caption = "Variences for male and female group for row data")
+
+
+## c(var(1/male[,4])>var(1/female[,4]),
+##   var(1/male[,5])>var(1/female[,5]),
+##   var(1/male[,8])>var(1/female[,8]),
+##   var(male[,10])>var(female[,10]))
+
+## [1]  TRUE FALSE FALSE  TRUE
+
+pvalue <- data.frame( c(var.test(1/male[,4],1/female[,4], alternative = 'two.sided')[[2]][1],
+                        var.test(1/male[,4],1/female[,4], alternative = 'two.sided')[[2]][2],
+                        var.test(1/male[,4],1/female[,4], alternative = 'two.sided')[[1]],
+                        var.test(1/male[,4],1/female[,4], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      c(var.test(1/female[,5],1/male[,5], alternative = 'two.sided')[[2]][1],
+                        var.test(1/female[,5],1/male[,5], alternative = 'two.sided')[[2]][2],
+                        var.test(1/female[,5],1/male[,5], alternative = 'two.sided')[[1]],
+                        var.test(1/female[,5],1/male[,5], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      c(var.test(1/female[,8],1/male[,8], alternative = 'two.sided')[[2]][1],
+                        var.test(1/female[,8],1/male[,8], alternative = 'two.sided')[[2]][2],
+                        var.test(1/female[,8],1/male[,8], alternative = 'two.sided')[[1]],
+                        var.test(1/female[,8],1/male[,8], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      c(var.test(male[,10],female[,10], alternative = 'two.sided')[[2]][1],
+                        var.test(male[,10],female[,10], alternative = 'two.sided')[[2]][2],
+                        var.test(male[,10],female[,10], alternative = 'two.sided')[[1]],
+                        var.test(male[,10],female[,10], alternative = 'two.sided')[[3]], 
+                        'Equal variances'),
+                      
+                      row.names = c(' Num df','Denom df','F','p-value','Equal/Unequal')
+                      
+                    )
+kable(pvalue, col.names = c("1/ADC cortex", "1/ADC medulla", "1/ADC whole kidney", "ADC CMD"),
+      caption = "Comparison of variences with F test for female and male group after transformation")
+
+```
+
+  
+
+```{r critical F MF, echo=FALSE}
+
+
+
+d <- data.frame(c('43','49',round(qf(c(0.025,0.975),43,49),5)),
+                c('49','43',round(qf(c(0.025,0.975),49,43),5)),
+                row.names = c('Num df','Denom df','Critical F lower','Critical F upper')
+                )
+
+kable(d, col.names = c("",""),caption = 'Critical F values')
+
+```
+
+Look at the Table 11. and Table 12. for reciplocal transformed ADC cortex, with numerator
+degrees of freedom 49 and denominator degrees of freedom 43 , F value is 1.2081721 which is lower
+than upper critical F value 1.8078736 indicating that we fail to reject the null hypothesis that:
+'Groups have the same variences' . P value of 0.5298427 also indicates that we fail to reject the null
+hypothesis.
+
+```{r t test trans MF, echo=FALSE}
+
+pvalue <- data.frame( c(t.test(1/female[,4],1/male[,4],var.equal = TRUE)[[1]],
+                        t.test(1/female[,4],1/male[,4],var.equal = TRUE)[[3]],
+                        'Equal means'),
+                      
+                      c(t.test(1/female[,5],1/male[,5],var.equal = TRUE)[[1]],
+                        t.test(1/female[,5],1/male[,5],var.equal = TRUE)[[3]],
+                        'Equal means'),
+                      
+                      c(t.test(1/female[,8],1/male[,8],var.equal = TRUE)[[1]],
+                        t.test(1/female[,8],1/male[,8],var.equal = TRUE)[[3]],
+                        'Equal means'),
+                      
+                      c(t.test(female[,10],male[,10], var.equal = TRUE)[[1]],
+                        t.test(female[,10],male[,10], var.equal = TRUE)[[3]],
+                        'Equal means'),
+                      row.names = c('t value','p-value','Equal/Unequal')
+                      
+                    )
+kable(pvalue, col.names = c("1/ADC cortex", "1/ADC medulla", "1/ADC whole kidney", "ADC CMD"),
+      caption = "Comparison of means with t test ( with equal variences and df = 92) for female and male group after transformation")
+
+```
+
+To reject the null hypothesis: " Groups have equal means " p value has to be less than 0.05 and t
+value greater than critical value of 1.986086 or less then -1.986086 . For instance reciprocal transformed
+ADC cortex has t value 1.8595612 little less than critical value 1.986086 and its p value 0.06614345 little greater than 0.05, so we fail to reject the null hypothesis: 'Groups have the same means'.
+
+## Apendix
+
+
+```{r ADCcortex plot, echo=FALSE, fig.height= 4.75, fig.width= 5.5, fig.align='center'}
+
+p <- ggplot(data = data, aes(x = eGFR, y = ADCcortex,colour = factor(PatientControl))) +
+     geom_point( aes(shape = factor(MF)) ) 
+
+p <- p +  scale_color_ptol() + theme_minimal() + 
+          theme(  legend.position = "top", 
+          legend.title=element_blank(), 
+          panel.background = element_rect(fill = 'white', colour = 'grey')) 
+
+ptrans <- ggplot(data = data, aes(x = eGFR*eGFR, y = 1/ADCcortex, colour = factor(PatientControl))) +
+          geom_point( aes(shape = factor(MF)) ) 
+
+ptrans <- ptrans +  scale_color_ptol() + theme_minimal() + 
+                    theme(  legend.position = 'none', 
+                    legend.title=element_blank(), 
+                    panel.background = element_rect(fill = 'white', colour = 'grey')) 
+
+ grid.arrange(p,ptrans, nrow=2)
+
+```
+
+
+```{r ADCmedulla plot, echo=FALSE, fig.height= 4.75, fig.width= 5.5, fig.align='center'}
+
+p <- ggplot(data = data, aes(x = eGFR, y = ADCmedulla,colour = factor(PatientControl))) +
+     geom_point( aes(shape = factor(MF)) ) 
+
+p <- p +  scale_color_ptol() + theme_minimal() + 
+          theme(  legend.position = "top", 
+          legend.title=element_blank(), 
+          panel.background = element_rect(fill = 'white', colour = 'grey')) 
+
+ptrans <- ggplot(data = data, aes(x = eGFR*eGFR, y = 1/ADCmedulla, colour = factor(PatientControl))) +
+          geom_point( aes(shape = factor(MF)) ) 
+
+ptrans <- ptrans +  scale_color_ptol() + theme_minimal() + 
+                    theme(  legend.position = 'none', 
+                    legend.title=element_blank(), 
+                    panel.background = element_rect(fill = 'white', colour = 'grey')) 
+
+ grid.arrange(p,ptrans, nrow=2)
+
+```
+
+
+```{r ADCwholekidney plot, echo=FALSE, fig.height= 4.75, fig.width= 5.5, fig.align='center'}
+
+p <- ggplot(data = data, aes(x = eGFR, y = ADCwholekidney,colour = factor(PatientControl))) +
+     geom_point( aes(shape = factor(MF)) ) 
+
+p <- p +  scale_color_ptol() + theme_minimal() + 
+          theme(  legend.position = "top", 
+          legend.title=element_blank(), 
+          panel.background = element_rect(fill = 'white', colour = 'grey')) 
+
+ptrans <- ggplot(data = data, aes(x = eGFR*eGFR, y = 1/ADCwholekidney, colour = factor(PatientControl))) +
+          geom_point( aes(shape = factor(MF)) ) 
+
+ptrans <- ptrans +  scale_color_ptol() + theme_minimal() + 
+                    theme(  legend.position = 'none', 
+                    legend.title=element_blank(), 
+                    panel.background = element_rect(fill = 'white', colour = 'grey')) 
+
+ grid.arrange(p,ptrans, nrow=2)
+
+```
+
+
+```{r ADCCMD plot, echo=FALSE, fig.height= 2.75, fig.width= 5, fig.align='center'}
+
+p <- ggplot(data = data, aes(x = eGFR, y = ADCCMD,colour = factor(PatientControl))) +
+     geom_point( aes(shape = factor(MF)) ) 
+
+p +  scale_color_ptol() + theme_minimal() + 
+     theme(  legend.position = "top", 
+     legend.title=element_blank(), 
+     panel.background = element_rect(fill = 'white', colour = 'grey'))
+
+
+
+```
+
+

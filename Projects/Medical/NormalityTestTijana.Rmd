@@ -1,0 +1,368 @@
+---
+title: "Normality Test"
+author: "Katica Ristic"
+date: "May 14, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Assess the normality of the data - visual method with nomality test ( comparing Shapiro-Wilk's,   Anderson-Darling and D'Agostino - Pearson test)    
+     
+     
+
+```{r DATAload, echo = FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+## loading data
+setwd("D:/MathJob/Tijana")
+## pacijenti <- read.csv("PacijentiCSV.csv")
+## attach(pacijenti)
+## data <- pacijenti[PatientControl == 'patient',]
+data <- read.csv("PacijentiCSV.csv")
+attach(data)
+
+
+## loading packages
+library("dplyr")
+library("ggpubr")
+library("ggplot2")
+##library("cowplot")
+library("nortest")
+library("PoweR")
+library("gridExtra")
+library("knitr")
+##theme_set(theme_cowplot(font_size=12))
+
+```
+    
+## eGFR 
+
+From the histogram and densety line of eGRF one could see the eGRF is left skewed distribution. Also on the eGRF q -q plot points are not following closely the line x = y, which indicate that the distribution of the data is not normal.
+
+```{r eGFR , echo = FALSE, fig.height= 5, fig.width= 5, fig.align='center'}
+
+
+
+ h <- ggplot(data.frame(eGFR), aes(x=eGFR, colour= "red"))
+ h <- h + geom_histogram(aes(y=..density..),colour="black", fill = "lightblue", bins = 7, show.legend = FALSE) 
+ h <- h + geom_density(alpha=.2, fill="#FF6666", show.legend = FALSE)
+ h <- h + theme_minimal()
+
+ g <- ggqqplot(data = eGFR, 
+         main = ' ', 
+         xlab = 'eGFR', 
+         ylab = '')
+ g <- g + theme_minimal()
+
+ grid.arrange(h,g, nrow=2)
+ 
+```
+        
+        
+
+
+```{r eGFR qqplot, echo = FALSE }
+
+
+```
+    
+Let us now test the normallity of the data with three statistical tests.  
+
+```{r eGFR tests , echo = FALSE }
+
+d <- data.frame("log Shapiro Wilk" = shapiro.test(eGFR)[[2]],
+            "log Anderson Darling" = ad.test(eGFR)[[2]], 
+            " log DAdagio Pearson" = statcompute(6,data= eGFR, levels = 0.05)$pvalue,
+            row.names = " p-value")
+kable(d,col.names = c("Shapiro - Wilk", "Anderson Darling", "D'Agostino - Pearson"),caption = "P-values of different normality tests for eGFR.")
+
+```
+
+All have p-values less than 0.05, which means that we reject the null hypothesis:"Data is normally distributed".   
+
+Some methods of making data normally distributed is to use the multiplicative inverse (reciprocal) or the square transformation. After applaying the square transformation on eGFR the histogram and q - q plot show normal distribution. 
+
+
+```{r  eGFReGFR , echo = FALSE, fig.height= 5, fig.width= 5, fig.align='center' }
+
+h <- ggplot(data.frame(eGFR*eGFR), aes(x=eGFR*eGFR, colour= "red"))
+h <- h + geom_histogram(aes(y=..density..),colour="black", fill = "lightblue", bins = 7, show.legend = FALSE) 
+h <- h + geom_density(alpha=.2, fill="#FF6666", show.legend = FALSE)
+h <- h + theme_minimal() 
+
+ 
+
+g <- ggqqplot(data = eGFR*eGFR, 
+         main = ' ', 
+         xlab = 'eGFR * eGFR', 
+         ylab = '')
+g <- g + theme_minimal()
+
+
+ grid.arrange(h,g, nrow=2)
+
+
+```
+
+Also two out of three p - values of transformed data are now greater than 0.05, which means that we fail to reject the null hypothesis: "Data is normally distributed". These two test are good candidates for choosing the normality test. Let us see how the rest of the variables will respond to them and to the corresponding plots.
+
+```{r Tests for eGFR  * eGFR , echo = FALSE }
+
+d <- data.frame("log Shapiro Wilk" = shapiro.test(eGFR * eGFR)[[2]],
+            "log Anderson Darling" = ad.test(eGFR * eGFR)[[2]], 
+            " log DAdagio Pearson" = statcompute(6,data= eGFR * eGFR, levels = 0.05)$pvalue,
+            row.names = " p-value")  
+
+## help.stat(stat.index = 6) opens help with description of The D'Agostino-Pearson test for normality
+
+kable(d,col.names = c("Shapiro - Wilk", "Anderson Darling", "D'Agostino - Pearson"),caption = "P-values of different normality tests for eGFR * eGFR.")
+
+
+```
+
+
+
+
+      
+## ADC cortex 
+
+```{r ADCcortex , echo = FALSE, fig.height= 5, fig.width= 5, fig.align='center' }
+
+h <- ggplot(data.frame(ADCcortex), aes(x=ADCcortex, colour= "red"))
+h <- h + geom_histogram(aes(y=..density..),colour="black", fill = "lightblue", bins = 7, show.legend = FALSE) 
+h <- h + geom_density(alpha=.2, fill="#FF6666", show.legend = FALSE)
+h <- h + theme_minimal()
+
+
+g <- ggqqplot(data = ADCcortex, 
+         main = ' ', 
+         xlab = 'ADC cortex', 
+         ylab = '')
+g <- g + theme_minimal()
+
+ grid.arrange(h,g, nrow=2)
+
+```
+
+The same two out of three statistical tests for testing the normality of the data are less than 0.05, so we reject the null hypothesis: "Data is normally distributed" and transformation of the data will be preformed.
+
+
+```{r Tests for ADC cortex , echo = FALSE }
+
+d <- data.frame("log Shapiro Wilk" = shapiro.test(ADCcortex)[[2]],
+            "log Anderson Darling" = ad.test(ADCcortex)[[2]], 
+            " log DAdagio Pearson" = statcompute(6,data= ADCcortex, levels = 0.05)$pvalue,
+            row.names = " p-value")
+kable(d,col.names = c("Shapiro - Wilk", "Anderson Darling", "D'Agostino - Pearson"),caption = "P-values of different normality tests for ADC cortex.")
+
+
+```
+
+## ADC cortex with  multiplicative inverse (reciprocal) transformation
+
+```{r ADCcortex changed , echo = FALSE, fig.height= 5, fig.width= 5, fig.align='center' }
+
+h <- ggplot(data.frame(1/ADCcortex), aes(x=1/ADCcortex, colour= "red"))
+h <- h + geom_histogram(aes(y=..density..),colour="black", fill = "lightblue", bins = 9, show.legend = FALSE) 
+h <- h + geom_density(alpha=.2, fill="#FF6666", show.legend = FALSE)
+h <- h + theme_minimal()
+
+g <- ggqqplot(data = 1/ADCcortex, 
+         main = ' ', 
+         xlab = '1/ADCcortex', 
+         ylab = '')
+g <- g + theme_minimal()
+
+ grid.arrange(h,g, nrow=2)
+
+
+```
+
+P - values of transformed data for all three tests are now greater than 0.05, which means that we fail to reject the null hypothesis: " Data is normally distributed ".
+
+```{r Tests for log ADC cortex, echo = FALSE }
+
+d <- data.frame("log Shapiro Wilk" = shapiro.test(1/ADCcortex)[[2]],
+            "log Anderson Darling" = ad.test(1/ADCcortex)[[2]], 
+            " log DAdagio Pearson" = statcompute(6,data= 1/ADCcortex, levels = 0.05)$pvalue,
+            row.names = " p-value")
+kable(d,col.names = c("Shapiro - Wilk", "Anderson Darling", "D'Agostino - Pearson"),caption = "P-values of different normality tests for 1/ADCcortex.")
+
+
+```
+        
+## ADC medulla 
+
+
+```{r ADCmedulla , echo = FALSE, fig.height= 5, fig.width= 5, fig.align='center' }
+
+h <- ggplot(data.frame(ADCmedulla), aes(x=ADCmedulla, colour= "red"))
+h <- h + geom_histogram(aes(y=..density..),colour="black", fill = "lightblue", bins = 7, show.legend = FALSE) 
+h <- h + geom_density(alpha=.2, fill="#FF6666", show.legend = FALSE)
+h <- h + theme_minimal()
+
+g <- ggqqplot(data = ADCmedulla , 
+         main = ' ', 
+         xlab = 'ADC medulla', 
+         ylab = '')
+g <- g + theme_minimal()
+
+ grid.arrange(h,g, nrow=2)
+
+```
+
+Both of the candidate tests for testing the normality of the data are far less than 0.05, so we reject the null hypothesis: "Data is normally distributed" and the transformation of the data will be preformed.
+
+```{r Tests for ADC medulla , echo = FALSE }
+
+d <- data.frame("log Shapiro Wilk" = shapiro.test(ADCmedulla)[[2]],
+            "log Anderson Darling" = ad.test(ADCmedulla)[[2]], 
+            " log DAdagio Pearson" = statcompute(6,data= ADCmedulla, levels = 0.05)$pvalue,
+            row.names = " p-value")
+kable(d,col.names = c("Shapiro - Wilk", "Anderson Darling", "D'Agostino - Pearson"),caption = "P-values of different normality tests for ADC medulla.")
+
+
+```
+      
+## ADC medulla with multiplicative inverse (reciprocal) transformation transformation
+
+```{r ADCmedulla changed , echo = FALSE, fig.height= 5, fig.width= 5, fig.align='center' }
+
+h <- ggplot(data.frame(1/ADCmedulla), aes(x=1/ADCmedulla, colour= "red"))
+h <- h + geom_histogram(aes(y=..density..),colour="black", fill = "lightblue", bins = 7, show.legend = FALSE) 
+h <- h + geom_density(alpha=.2, fill="#FF6666", show.legend = FALSE)
+h <- h + theme_minimal()
+
+g <- ggqqplot(data = 1/ADCmedulla , 
+         main = ' ', 
+         xlab = '1/ADCmedulla', 
+         ylab = '')
+g <- g + theme_minimal()
+
+ grid.arrange(h,g, nrow=2)
+
+```
+
+All the P - values of transformed data are now greater than 0.05, which means that we fail to reject the null hypothesis: "Data is normally distributed". So far the D'Agostino - Pearson test is the most sensitive to the data.
+
+```{r Tests for log ADC medulla, echo = FALSE }
+
+d <- data.frame("log Shapiro Wilk" = shapiro.test(1/ADCmedulla)[[2]],
+            "log Anderson Darling" = ad.test(1/ADCmedulla)[[2]], 
+            " log DAdagio Pearson" = statcompute(6,data= 1/ADCmedulla, levels = 0.05)$pvalue,
+            row.names = " p-value")
+kable(d,col.names = c("Shapiro - Wilk", "Anderson Darling", "D'Agostino - Pearson"),caption = "P-values of different normality tests for 1/ADCmedulla.")
+
+```
+     
+     
+## ADC whole kidney
+
+```{r  ADCwholekidney , echo = FALSE, fig.height= 5, fig.width= 5, fig.align='center' }
+
+## ploting density function
+
+h <- ggplot(data.frame(ADCwholekidney), aes(x=ADCwholekidney, colour= "red"))
+h <- h + geom_histogram(aes(y=..density..),colour="black", fill = "lightblue", bins = 7, show.legend = FALSE) 
+h <- h + geom_density(alpha=.2, fill="#FF6666", show.legend = FALSE)
+h <- h + theme_minimal()
+
+g <- ggqqplot(data = ADCwholekidney, 
+         main = ' ', 
+         xlab = 'ADC whole kidney', 
+         ylab = '')
+g <- g + theme_minimal()
+
+ grid.arrange(h,g, nrow=2) 
+ 
+```
+
+Our most promising candidates for testing the normality of the data are less than 0.05, so we reject the null hypothesis: "Data is normally distributed" and transformation of the data will be preformed.
+
+```{r Tests for ADC wholekidney , echo = FALSE }
+
+d <- data.frame("log Shapiro Wilk" = shapiro.test(ADCwholekidney)[[2]],
+            "log Anderson Darling" = ad.test(ADCwholekidney)[[2]], 
+            " log DAdagio Pearson" = statcompute(6,data= ADCwholekidney, levels = 0.05)$pvalue,
+            row.names = " p-value")
+kable(d,col.names = c("Shapiro - Wilk", "Anderson Darling", "D'Agostino - Pearson"),caption = "P-values of different normality tests for ADC whole kidney.")
+
+
+```
+
+## ADC whole kidney with multiplicative inverse (reciprocal) transformation
+
+```{r  ADCwholekidney changed, echo = FALSE, fig.height= 5, fig.width= 5, fig.align='center' }
+
+## ploting density function
+
+h <- ggplot(data.frame(1/ADCwholekidney), aes(x=1/ADCwholekidney, colour= "red"))
+h <- h + geom_histogram(aes(y=..density..),colour="black", fill = "lightblue", bins = 7, show.legend = FALSE) 
+h <- h + geom_density(alpha=.2, fill="#FF6666", show.legend = FALSE)
+h <- h + theme_minimal()
+
+g <- ggqqplot(data = 1/ADCwholekidney, 
+         main = ' ', 
+         xlab = '1/ADCwholekidney', 
+         ylab = '')
+g <- g + theme_minimal()
+
+ grid.arrange(h,g, nrow=2)
+
+
+```
+
+P - values of transformed data for all three tests are now greater than 0.05, which means that we fail to reject the null hypothesis: " Data is normally distributed ".
+
+
+```{r Tests for ADC wholekidney changed, echo = FALSE }
+
+d <- data.frame("log Shapiro Wilk" = shapiro.test(1/ADCwholekidney)[[2]],
+            "log Anderson Darling" = ad.test(1/ADCwholekidney)[[2]], 
+            " log DAdagio Pearson" = statcompute(6,data= 1/ADCwholekidney, levels = 0.05)$pvalue,
+            row.names = " p-value")
+kable(d,col.names = c("Shapiro - Wilk", "Anderson Darling", "D'Agostino - Pearson"),caption = "P-values of different normality tests for 1/ADCwholekidney.")
+
+```
+
+
+## ADC CMD 
+
+```{r ADCCMD , echo = FALSE, fig.height= 5, fig.width= 5, fig.align='center' }
+
+
+
+h <- ggplot(data.frame(ADCCMD), aes(x=ADCCMD, colour= "red"))
+h <- h + geom_histogram(aes(y=..density..),colour="black", fill = "lightblue", bins = 7, show.legend = FALSE) 
+h <- h + geom_density(alpha=.2, fill="#FF6666", show.legend = FALSE)
+h <- h + theme_minimal()
+
+g <- ggqqplot(data = ADCCMD, 
+         main = ' ', 
+         xlab = 'ADC CMD', 
+         ylab = '')
+g <- g + theme_minimal()
+
+ grid.arrange(h,g, nrow=2)
+
+```
+          
+For all three tests ADC CMD p - value is greater tnan 0.05, so we fail to reject the null hypothesis: " Data is normally distributed ". So we do not need to transform the data.     
+
+
+```{r Tests for ADC CMD , echo = FALSE }
+
+d <- data.frame("log Shapiro Wilk" = shapiro.test(ADCCMD)[[2]],
+            "log Anderson Darling" = ad.test(ADCCMD)[[2]], 
+            " log DAdagio Pearson" = statcompute(6,data= ADCCMD, levels = 0.05)$pvalue,
+            row.names = " p-value")
+kable(d,col.names = c("Shapiro - Wilk", "Anderson Darling", "D'Agostino - Pearson"),caption = "P-values of different normality tests for ADC CMD.")
+
+
+```
+
+
+# Conclusion 
+
+Comparing three normality statistical tests for this particular data the obvious choice is  **D'Agostino - Pearson** test.  This test is most sensitive to the data, as mentioned before, and also the most closely corresponds to the  conclusions derived from the plots.

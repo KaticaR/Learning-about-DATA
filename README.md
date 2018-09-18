@@ -28,6 +28,9 @@ https://www.udemy.com/the-complete-sql-bootcamp/
 https://academy.microsoft.com/en-us/tracks/data-science
 
 
+### Enrolled in MITx MicroMasters Program in Statistics and Data Science
+https://micromasters.mit.edu/ds/
+
 ### Reading books:  
 
 An Introduction to Statistical Learning with Applications in R ( Springer )  
@@ -37,7 +40,7 @@ Gareth James • Daniela Witten • Trevor Hastie Robert Tibshirani
 FUNDAMENTALS OF Database Systems  
 http://iips.icci.edu.iq/images/exam/databases-ramaz.pdf
 
-Computational and Inferential Thinking - The Foundations of Data Science ( Python )
+Computational and Inferential Thinking - The Foundations of Data Science ( Python )    
 https://ds8.gitbooks.io/textbook/content/
 
 

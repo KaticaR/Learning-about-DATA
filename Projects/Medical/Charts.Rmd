@@ -1,0 +1,278 @@
+---
+title: "charts"
+author: "Katica Ristic"
+date: "July 6, 2018"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Charts 
+
+Charts made with a help of the link:
+
+<https://moderndata.plot.ly/interactive-r-visualizations-with-d3-ggplot2-rstudio/>.
+
+
+
+```{r DATAload, echo = FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+library(plotly)
+library(shiny)
+
+setwd("D:/MathJob/Tijana")
+data <- read.csv("PacijentiCSV.csv")
+attach(data)
+
+```
+
+## eGFR -  male vs female
+
+```{r boxes eGFR MF, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~eGFR, color = ~MF, type = "box" )
+p
+
+
+```
+
+## eGFR - patient vs control group
+
+
+```{r boxes eGFR PC, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~eGFR, color = ~PatientControl, type = "box" )
+p
+
+
+```
+
+## ADCcortex - male vs female
+
+```{r boxes ADCcortex MF, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~ADCcortex, color = ~MF, type = "box" )
+p
+
+
+```
+
+## ADCcortex - patient vs control group
+
+```{r boxes ADCcortex PC, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~ADCcortex, color = ~PatientControl, type = "box" )
+p
+
+
+```
+
+## ADCmedulla - male vs female
+
+
+```{r boxes ADCmedulla MF, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~ADCmedulla, color = ~MF, type = "box" )
+p
+
+
+```
+
+## ADCmedulla - patient vs control group
+
+```{r boxes ADCmedulla PC, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~ADCmedulla, color = ~PatientControl, type = "box" )
+p
+
+
+```
+
+## ADCwholekidney - male vs female
+
+```{r boxes ADCwholekidney MF, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~ADCwholekidney, color = ~MF, type = "box" )
+p
+
+
+```
+
+## ADCwholekidney - patient vs control group
+
+```{r boxes ADCwholekidney PC, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~ADCwholekidney, color = ~PatientControl, type = "box" )
+p
+
+
+```
+
+## ADCCMD - male vs female
+
+```{r boxes ADCCMD MF, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~ADCCMD, color = ~MF, type = "box" )
+p
+
+
+```
+
+## ADCCMD - patient vs control group
+
+```{r boxes ADCCMD PC, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~ADCCMD, color = ~PatientControl, type = "box" )
+p
+
+
+```
+
+## Chart eGFR vs ADCcortex 
+
+
+```{r Chart eGFR vs ADCcortex for MF, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~eGFR, y = ADCcortex , 
+             text = paste("Gender: ", MF, '\n' ,"Group: ", PatientControl  ),
+             mode = "markers", 
+             color = ~MF, 
+             size = ADCcortex,
+             symbol = ~PatientControl)
+p
+
+
+```
+
+
+## Chart eGFR vs ADCmedulla  
+
+
+```{r Chart eGFR vs ADCmedulla for MF, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~eGFR, y = ADCmedulla , 
+             text = paste("Gender: ", MF, '\n' ,"Group: ", PatientControl), 
+             mode = "markers", 
+             color = ~MF, 
+             size = ADCmedulla,
+             symbol = ~PatientControl )
+p
+
+
+```
+
+
+
+## Chart eGFR vs ADCwholekidney 
+
+
+```{r Chart eGFR vs ADCwholekidney for MF, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~eGFR, y = ADCwholekidney , 
+             text = paste("Gender: ", MF, '\n' ,"Group: ", PatientControl), 
+             mode = "markers", 
+             color = ~MF, 
+             size = ADCwholekidney,
+             symbol = ~PatientControl )
+p
+
+
+```
+
+
+## Chart eGFR vs ADCCMD 
+
+
+```{r Chart eGFR vs ADCCMD for MF, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~eGFR, y = ADCCMD , 
+             text = paste("Gender: ", MF, '\n' ,"Group: ", PatientControl), 
+             mode = "markers", 
+             color = ~MF, 
+             size = ADCCMD,
+             symbol = ~PatientControl )
+p
+
+
+```
+   
+   
+## Chart eGFR vs ADCcortex for patient and control group
+
+
+```{r Chart eGFR vs ADCcortex for PC, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~eGFR, y = ADCcortex , 
+             text = paste("Group: ", PatientControl  ), 
+             mode = "markers", 
+             color = ~PatientControl, 
+             size = ADCcortex )
+p
+
+
+```
+
+
+
+
+
+## Chart eGFR vs ADCmedulla for patient and control group
+
+
+```{r Chart eGFR vs ADCmedulla for PC, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~eGFR, y = ADCmedulla , 
+             text = paste("Gender: ", PatientControl), 
+             mode = "markers", 
+             color = ~PatientControl, 
+             size = ADCmedulla )
+p
+
+
+```
+
+
+
+## Chart eGFR vs ADCwholekidney for patient and control group 
+
+
+```{r Chart eGFR vs ADCwholekidney for PC, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~eGFR, y = ADCwholekidney , 
+             text = paste("Gender: ", PatientControl), 
+             mode = "markers", 
+             color = ~PatientControl, 
+             size = ADCwholekidney )
+p
+
+
+```
+
+
+## Chart eGFR vs ADCCMD for patient and control group
+
+
+```{r Chart eGFR vs ADCCMD for PC, echo=FALSE, warning = FALSE, cache = FALSE, message = FALSE}
+
+p <- plot_ly(data, x = ~eGFR, y = ADCCMD , 
+             text = paste("Gender: ", PatientControl), 
+             mode = "markers", 
+             color = ~PatientControl, 
+             size = ADCCMD )
+p
+
+
+```
+   
+   
+   
+   
+   
+               
+   
+   
+             

@@ -29,7 +29,7 @@ https://academy.microsoft.com/en-us/tracks/data-science
 
 
 ### Enrolled in MITx MicroMasters Program in Statistics and Data Science
-https://micromasters.mit.edu/ds/
+https://micromasters.mit.edu/ds/        
 https://github.com/KaticaR/Learning-about-DATA/tree/master/WiDS%20conference/MITFlyers
 
 

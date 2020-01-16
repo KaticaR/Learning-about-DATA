@@ -11,6 +11,7 @@ linkcolor: cyan
 
 > **Comment:** This overview has been written in R Markdown that provides an authoring framework for data science. Learn more at <https://bookdown.org/yihui/rmarkdown/>
 
+
 \thispagestyle{empty}
 \newpage
 
@@ -20,6 +21,7 @@ linkcolor: cyan
 knitr::opts_chunk$set(echo = TRUE)
 library(tinytex)
 ```
+
 
 \pagenumbering{gobble}
 \pagenumbering{arabic}
@@ -62,16 +64,40 @@ More about the program could be found [**here**](https://micromasters.mit.edu/ds
   
 > where stidents are gaining knowledge about principles and algorithms for turning training data into effective automated predictions. In it's second edition, the course already has 50 thousands students enrolled.
 
+
 \newpage
 
 
-## Unit 0: Course overview 
+## Unit 0: Course overview (1 weeks)
 > **Brief Review of Vectors, Planes, and Optimization **
      
 ###     
 > In this Unit, three videos (total 21:09 minutes) were presented showing basic overview of:
 
   >- **vectors** in n-dimensional space (addition and subtraction of two vectors, norm of an vector, dot product of two vectors)
-  >- **plane definition** in n-dimensional spaces (used later in classification for decision boundary) as: a point $x$ of n-dimensional space belongs to some plane if it satisfies the equation $\theta \cdot x + \theta_{0} = 0$, where $\theta$ is a vector perpendicular to that plane and $\theta_{0}$ an offset of the plane from it's origin. 
-  >- loss Function, gradient descent and chain rule
 
+  >- **plane definition** in n-dimensional spaces (used later in classification for decision boundary) as: a point $x$ of n-dimensional space belongs to some plane if it satisfies the equation $\theta \cdot x + \theta_{0} = 0$, where $\theta$ is a vector perpendicular to that plane and $\theta_{0}$ an offset of the plane from it's origin. 
+  >- **loss function** ($L(x, y; \theta) = \dfrac{1}{n} \sum_{i = 1}^{n} | \hat{y} - y_{i}|$ ), **gradient descent** ($\hat{\theta} = \theta - \gamma \nabla_{\theta} L(x, y; \theta)$) and **chain rule** explained on some example function 
+  
+> The homework for this Unit (total 32 questions) referred to the next topics: 
+
+  1. Points and Vectors
+  2. Planes
+  3. Matrices
+  4. Probability Density Functions
+  5. Univariate Gaussians
+  6. Optimization and gradients
+  
+> Project 0 has initial Python setup and packages installation, introduction to Numpy, Neural network exercise, introduction to ML packages and one debugging exercise. 
+
+## Unit 1: Linear Classifiers and Generalizations (2 weeks)
+  
+### Lecture 1. Introduction to Machine Learning 
+> Objectives
+
+  >- Understand the goal of machine learning from a movie recommender example
+  >- Understand elements of **supervised learning**, and the difference between the **training set** and the **test set**
+  >- Understand the difference of **classification** and **regression** - two representative kinds of supervised learning
+
+> Machine Learning definition was introduced: **Machine learning** is a discipline aims to design, understand, and apply computer programs that learn from experience (i.e. data) for the purpose of modelling, prediction, and control. Main focus of this lecture is on the prediction, explained through examples on the market value of a stock measured as a function of time or in a self-driving vehicle, one can try to predict whether a collision is about to happen, in a medical context, one might predict the risk of acquiring or getting a recurrence for a disease. There are other types of prediction such as someone liking a movie or not, predicting the properties of an image or in machine translation, translating one sentence from English to Spanish for example. 
+  

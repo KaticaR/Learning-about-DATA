@@ -1,0 +1,240 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+%
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+            pdftitle={MITx: 6.86x Machine Learning with Python - From Linear Models to Deep Learning},
+            colorlinks=true,
+            linkcolor=cyan,
+            citecolor=Blue,
+            urlcolor=Blue,
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+
+\title{MITx: 6.86x Machine Learning with Python - From Linear Models to Deep
+Learning}
+\providecommand{\subtitle}[1]{}
+\subtitle{Overview}
+\author{}
+\date{\vspace{-2.5em}December 2019}
+
+\begin{document}
+\maketitle
+
+\begin{quote}
+\textbf{Comment:} This overview has been written in R Markdown that
+provides an authoring framework for data science. Learn more at
+\url{https://bookdown.org/yihui/rmarkdown/}
+\end{quote}
+
+\thispagestyle{empty}
+\newpage
+
+\pagenumbering{gobble}
+\pagenumbering{arabic}
+
+\#MITx's MicroMasters Program in Statistics and Data Science\\
+*** \textgreater{} \#\#\#From probability and statistics to data
+analysis and machine learning, master the skills needed to solve complex
+challenges with data.
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\hypertarget{section}{%
+\subsubsection{}\label{section}}
+
+\begin{quote}
+In september 2019. a great MIT's movement, to open their doors to the
+whole world, has come to the field of Data Science. Anyone from the EdX
+platform for online learning, showing interests for Data Science has
+gotten an invitation to join. In the next year or so, the future
+students were asked to pass 4 MIT exams and one Capstone exam, so they
+could get the MIT's credentials in Data Science area. If they achieve
+the goal, they could also apply for the second semester on MIT's campus
+and finish \textbf{Masters of Statistics and Data Science} in a hybrid
+generation of online and on campus students.
+\end{quote}
+
+\begin{quote}
+Mastering the foundations of data science, statistics, and machine
+learning using programming languages like \textbf{Python} and \textbf{R}
+students are prepared for jobs like: Data Scientist, Data Analyst,
+Business Intelligence Analyst, Systems Analyst, Data Engineer. More
+about the program could be found
+\href{https://micromasters.mit.edu/ds/}{\textbf{here}}.
+\end{quote}
+
+\#MITx: 6.86x Machine Learning with Python
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\begin{quote}
+\hypertarget{an-in-depth-introduction-to-the-field-of-machine-learning-from-linear-models-to-deep-learning-and-reinforcement-learning-through-hands-on-python-projects.-course-4-of-4-in-the-mitx-micromasters-program-in-statistics-and-data-science.}{%
+\subsubsection{An in-depth introduction to the field of machine
+learning, from linear models to deep learning and reinforcement
+learning, through hands-on Python projects. -- Course 4 of 4 in the MITx
+MicroMasters program in Statistics and Data
+Science.}\label{an-in-depth-introduction-to-the-field-of-machine-learning-from-linear-models-to-deep-learning-and-reinforcement-learning-through-hands-on-python-projects.-course-4-of-4-in-the-mitx-micromasters-program-in-statistics-and-data-science.}}
+\end{quote}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\hypertarget{section-1}{%
+\subsubsection{}\label{section-1}}
+
+\begin{quote}
+\href{https://www.edx.org/course/machine-learning-with-python-from-linear-models-to}{MITx:
+6.86x} is advanced 14 week long instructor paced online course given by
+MIT's Department of Electrical Engineering and Computer Science.
+Prerequisites for this course are:
+\end{quote}
+
+\begin{quote}
+\begin{itemize}
+\tightlist
+\item
+  \href{https://www.edx.org/course/introduction-to-computer-science-and-programming-7}{MIT:
+  6.00.1x} (Introduction to Computer Science and Programming Using
+  Python) or proficiency in Python programming
+\item
+  \href{https://www.edx.org/course/probability-the-science-of-uncertainty-and-data}{MITx:
+  6.431x} (Probability - The Science of Uncertainty and Data) or
+  equivalent probability theory course
+\item
+  College-level single and multi-variable calculus
+\item
+  Vectors and matrices
+\end{itemize}
+\end{quote}
+
+\begin{quote}
+Course is presented in 6 Units, with 19 Lectures, 7 Homeworks and 5
+Python Projects, through topics like:
+\end{quote}
+
+\begin{quote}
+\begin{itemize}
+\tightlist
+\item
+  Representation, over-fitting, regularization, generalization, VC
+  dimension
+\item
+  Clustering, classification, recommender problems, probabilistic
+  modeling, reinforcement learning
+\item
+  On-line algorithms, support vector machines, and neural networks/deep
+  learning
+\end{itemize}
+\end{quote}
+
+\begin{quote}
+where stidents are gaining knowledge about principles and algorithms for
+turning training data into effective automated predictions. In it's
+second edition, the course already has 50 thousands students enrolled.
+\end{quote}
+
+\newpage
+
+\hypertarget{unit-0-course-overview}{%
+\subsection{Unit 0: Course overview}\label{unit-0-course-overview}}
+
+\begin{quote}
+\textbf{Brief Review of Vectors, Planes, and Optimization }
+\end{quote}
+
+\hypertarget{section-2}{%
+\subsubsection{}\label{section-2}}
+
+\begin{quote}
+In this Unit, three videos (total 21:09 minutes) were presented showing
+basic overview of:
+\end{quote}
+
+\begin{quote}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{vectors} in n-dimensional space (addition and subtraction of
+  two vectors, norm of an vector, dot product of two vectors)
+\end{itemize}
+\end{quote}
+
+\begin{quote}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{plane definition} in n-dimensional spaces (used later in
+  classification for decision boundary) as: a point \(x\) of
+  n-dimensional space belongs to some plane if it satisfies the equation
+  \(\theta \cdot x + \theta_{0} = 0\), where \(\theta\) is a vector
+  perpendicular to that plane and \(\theta_{0}\) an offset of the plane
+  from it's origin.
+\item
+  loss Function, gradient descent and chain rule
+\end{itemize}
+\end{quote}
+
+\end{document}

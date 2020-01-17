@@ -92,12 +92,133 @@ More about the program could be found [**here**](https://micromasters.mit.edu/ds
 
 ## Unit 1: Linear Classifiers and Generalizations (2 weeks)
   
-### Lecture 1. Introduction to Machine Learning 
+### Lecture 1. Introduction to Machine Learning (total video: 33:00, total number of questions: 16)
+
 > Objectives
 
   >- Understand the goal of machine learning from a movie recommender example
   >- Understand elements of **supervised learning**, and the difference between the **training set** and the **test set**
   >- Understand the difference of **classification** and **regression** - two representative kinds of supervised learning
 
-> Machine Learning definition was introduced: **Machine learning** is a discipline aims to design, understand, and apply computer programs that learn from experience (i.e. data) for the purpose of modelling, prediction, and control. Main focus of this lecture is on the prediction, explained through examples on the market value of a stock measured as a function of time or in a self-driving vehicle, one can try to predict whether a collision is about to happen, in a medical context, one might predict the risk of acquiring or getting a recurrence for a disease. There are other types of prediction such as someone liking a movie or not, predicting the properties of an image or in machine translation, translating one sentence from English to Spanish for example. 
+> **Machine Learning** definition was introduced: Machine learning is a discipline aims to design, understand, and apply computer programs that learn from experience (i.e. data) for the purpose of modelling, prediction, and control. Main focus of this lecture is on the prediction, explained through examples on the market value of a stock measured as a function of time or in a self-driving vehicle, one can try to predict whether a collision is about to happen, in a medical context, one might predict the risk of acquiring or getting a recurrence for a disease. There are other types of prediction such as someone liking a movie or not, predicting the properties of an image or in machine translation, translating one sentence from English to Spanish language for example. 
+> **Supervised Learning** was introduced: machine learning tasks are really provided in terms of examples of correct behavior, like putting large number of images into an annotated categories and then automating the process
+of finding the solution to a task, that's illustrated by examples of images, as defining a set of possible mappings depending of an image and a parameter outputting the category of an image. A different value for these parameters will specify a different mapping. The aim is out of all the possible parameters to find the one that agrees the best with the given set of examples.  
+> A Concrete Example of a Supervised Learning Task: Movie Recommender Problem. Each movie has a **feature vector** , $x^{(i)}$, with binary values answering specific questions about a given movie and a as output, $y^{(i)}$, +1 if one liked the movie and -1 if not. This is how one gets a training set of feature vectors (examples) with the associated **labels**. The task is to learn a mapping from those vectors to the labels. This mapping is then tested on the test set hoping that it will predict well the labels. Then naturally **training error** and **test errors** are introduced as a measure how good this mapping, a **classifier** - $h: \ksi  \mapsto {-1, 1}$, performs. The problem can occur if the training error is too small, that could mean possibility of overfiting the classifier to the given data. In that case the test error would be to high. 
+> Types of machine learning:
+  >- **Supervised learning** - explicitly specify the correct behavior
+  >- **Unsupervised learning** - strip the labels, only given the examples, model/find the irregularities in how those examples vary.
+  >- **Semi-supervised learning** - mix of supervised and unsupervised
+  >- **Active learning** - the algorithm can itself ask for useful, additional examples
+  >- **Transfer learning** - training the method based on one scenario and applying the method in a different scenario
+  >- **Reinforcement learning** - learning to control, learning to take actions in the world so as to optimize some criteria
   
+#3 Pictures 
+
+
+### Lecture 2. Linear Classifier and Perceptron (total video: 45:28, total number of questions: 19)
+
+> Objectives
+
+  >- Understand the concepts of Feature vectors and labels, Training set and Test set, Classifier, Training error, Test error, and the Set of classifiers
+  >- Understand the mathematical presentation of linear classifiers
+  >- Understand the intuitive and formal definition of linear separation
+  >- Understand the perceptron algorithm with and without offset
+
+### Lecture 3 Hinge loss, Margin boundaries and Regularization  (total video: 24:17, total number of questions: 10)
+
+> Objectives
+
+  >- Understand the need for maximizing the margin
+  >- Know how to pose linear classification as an optimization problem
+  >- Understand hinge loss, margin boundaries and regularization
+ 
+### Homework 1 (total number of questions: 36)
+
+  1. Perceptron Mistakes
+  2. Perceptron Performance
+  3. Decision Boundaries
+  4. Feature Vectors
+  
+  
+### Lecture 4. Linear Classification and Generalization (total video: 27:58, total number of questions: 11)
+
+> Objectives
+
+  >- Understanding optimization view of learning
+  >- Optimization algorithms - gradient descent, stochastic gradient descent, quadratic program
+
+
+### Homework 2 (total number of questions: 12)
+
+  1. Linear Support Vector Machines
+  2. Passive-aggressive algorithm
+  3. Perceptron Updates
+
+
+### Project 1: Automatic Review Analyzer (number of coding questions: 9, number of additional questions 30)
+
+> The goal of this project is to design a classifier to use for sentiment analysis of product reviews. The training set consists of reviews written by Amazon customers for various food products. The reviews, originally given on a 5 point scale, have been adjusted to a +1 or -1 scale, representing a positive or negative review, respectively.
+
+> Python solutions on the given topics were required: 
+
+  1. Hinge Loss
+  2. Perceptron Algorithm
+  3. Algorithm Discussion
+  4. Classification and Accuracy
+  5. Parameter Tuning
+  6. Feature Engineering
+  
+  
+## Unit 2 Nonlinear Classification, Linear regression, Collaborative Filtering (2 weeks) 
+
+###Lecture 5. Linear Regression (total video: 50:46, total number of questions: 10)
+
+
+> Objectives
+
+  >- Write the training error as least squares criterion for linear regression
+  >- Use stochastic gradient descent for fitting linear regression models
+  >- Solve closed-form linear regression solution
+  >- Identify regularization term and how it changes the solution, generalization
+  
+### Lecture 6. Nonlinear Classification: Kernels (total video: 49:13, total number of questions: 13)
+
+> Objectives
+
+  >- Non-linear classifiers from feature maps
+  >- Moving from coordinate parameterization to weighting examples
+  >- Kernel functions induced from feature maps
+  >- Kernel perceptron, kernel linear regression
+  >- Properties of kernel functions
+  
+### Lecture 7. Recommender Systems (total video: 36:41, total number of questions: 9)
+
+
+> Objectives
+
+  >- Understand the problem definition and assumptions of recommender systems
+  >- Understand the impact of similarity measures in the K-Nearest Neighbor method
+  >- Understand the need to impose the low rank assumption in collaborative filtering
+  >- Iteratively find values of  $U$  and  $V$  (given  $X = UV^T$ ) in collaborative filtering
+
+
+### Homework 3 (total number of questions: 26)
+
+  1. Collaborative Filtering, Kernels, Linear Regression
+  2. Feature Vectors Transformation
+  3. Kernels
+  4. Linear Regression and Regularization
+  
+  
+### Project 2: Digit recognition (Part 1) (number of coding questions: 11, number of additional questions 20)
+
+> The MNIST database contains binary images of handwritten digits commonly used to train image processing systems. The digits were collected from among Census Bureau employees and high school students. The database contains 60,000 training digits and 10,000 testing digits, all of which have been size-normalized and centered in a fixed-size image of 28 × 28 pixels. Many methods have been tested with this dataset and in this project, one will get a chance to experiment with the task of classifying these images into the correct digit using some of the methods you have learned so far.
+
+> Python solutions on the given topics were required: 
+
+  1. Support Vector Machine
+  2. Multinomial (Softmax) Regression and Gradient Descent
+  3. Classification Using Manually Crafted Features
+  4. Dimensionality Reduction Using PCA
+  5. Cubic Features
+  6. Kernel Methods

@@ -198,8 +198,9 @@ second edition, the course already has 50 thousands students enrolled.
 
 \newpage
 
-\hypertarget{unit-0-course-overview}{%
-\subsection{Unit 0: Course overview}\label{unit-0-course-overview}}
+\hypertarget{unit-0-course-overview-1-weeks}{%
+\subsection{Unit 0: Course overview (1
+weeks)}\label{unit-0-course-overview-1-weeks}}
 
 \begin{quote}
 \textbf{Brief Review of Vectors, Planes, and Optimization }
@@ -233,8 +234,394 @@ basic overview of:
   perpendicular to that plane and \(\theta_{0}\) an offset of the plane
   from it's origin.
 \item
-  loss Function, gradient descent and chain rule
+  \textbf{loss function}
+  (\(L(x, y; \theta) = \dfrac{1}{n} \sum_{i = 1}^{n} | \hat{y} - y_{i}|\)
+  ), \textbf{gradient descent}
+  (\(\hat{\theta} = \theta - \gamma \nabla_{\theta} L(x, y; \theta)\))
+  and \textbf{chain rule} explained on some example function
 \end{itemize}
 \end{quote}
+
+\begin{quote}
+The homework for this Unit (total 32 questions) referred to the next
+topics:
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Points and Vectors
+\item
+  Planes
+\item
+  Matrices
+\item
+  Probability Density Functions
+\item
+  Univariate Gaussians
+\item
+  Optimization and gradients
+\end{enumerate}
+
+\begin{quote}
+Project 0 has initial Python setup and packages installation,
+introduction to Numpy, Neural network exercise, introduction to ML
+packages and one debugging exercise.
+\end{quote}
+
+\hypertarget{unit-1-linear-classifiers-and-generalizations-2-weeks}{%
+\subsection{Unit 1: Linear Classifiers and Generalizations (2
+weeks)}\label{unit-1-linear-classifiers-and-generalizations-2-weeks}}
+
+\hypertarget{lecture-1.-introduction-to-machine-learning-total-video-3300-total-number-of-questions-16}{%
+\subsubsection{Lecture 1. Introduction to Machine Learning (total video:
+33:00, total number of questions:
+16)}\label{lecture-1.-introduction-to-machine-learning-total-video-3300-total-number-of-questions-16}}
+
+\begin{quote}
+Objectives
+\end{quote}
+
+\begin{quote}
+\begin{itemize}
+\tightlist
+\item
+  Understand the goal of machine learning from a movie recommender
+  example
+\item
+  Understand elements of \textbf{supervised learning}, and the
+  difference between the \textbf{training set} and the \textbf{test set}
+\item
+  Understand the difference of \textbf{classification} and
+  \textbf{regression} - two representative kinds of supervised learning
+\end{itemize}
+\end{quote}
+
+\begin{quote}
+\textbf{Machine Learning} definition was introduced: Machine learning is
+a discipline aims to design, understand, and apply computer programs
+that learn from experience (i.e.~data) for the purpose of modelling,
+prediction, and control. Main focus of this lecture is on the
+prediction, explained through examples on the market value of a stock
+measured as a function of time or in a self-driving vehicle, one can try
+to predict whether a collision is about to happen, in a medical context,
+one might predict the risk of acquiring or getting a recurrence for a
+disease. There are other types of prediction such as someone liking a
+movie or not, predicting the properties of an image or in machine
+translation, translating one sentence from English to Spanish language
+for example. \textbf{Supervised Learning} was introduced: machine
+learning tasks are really provided in terms of examples of correct
+behavior, like putting large number of images into an annotated
+categories and then automating the process of finding the solution to a
+task, that's illustrated by examples of images, as defining a set of
+possible mappings depending of an image and a parameter outputting the
+category of an image. A different value for these parameters will
+specify a different mapping. The aim is out of all the possible
+parameters to find the one that agrees the best with the given set of
+examples.\\
+A Concrete Example of a Supervised Learning Task: Movie Recommender
+Problem. Each movie has a \textbf{feature vector} , \(x^{(i)}\), with
+binary values answering specific questions about a given movie and a as
+output, \(y^{(i)}\), +1 if one liked the movie and -1 if not. This is
+how one gets a training set of feature vectors (examples) with the
+associated \textbf{labels}. The task is to learn a mapping from those
+vectors to the labels. This mapping is then tested on the test set
+hoping that it will predict well the labels. Then naturally
+\textbf{training error} and \textbf{test errors} are introduced as a
+measure how good this mapping, a \textbf{classifier} -
+\(h: \chi \to {-1, 1}\), performs. The problem can occur if the training
+error is too small, that could mean possibility of overfiting the
+classifier to the given data. In that case the test error would be to
+high. Types of machine learning: - \textbf{Supervised learning} -
+explicitly specify the correct behavior - \textbf{Unsupervised learning}
+- strip the labels, only given the examples, model/find the
+irregularities in how those examples vary. - \textbf{Semi-supervised
+learning} - mix of supervised and unsupervised - \textbf{Active
+learning} - the algorithm can itself ask for useful, additional examples
+- \textbf{Transfer learning} - training the method based on one scenario
+and applying the method in a different scenario - \textbf{Reinforcement
+learning} - learning to control, learning to take actions in the world
+so as to optimize some criteria
+\end{quote}
+
+\#3 Pictures
+
+\hypertarget{lecture-2.-linear-classifier-and-perceptron-total-video-4528-total-number-of-questions-19}{%
+\subsubsection{Lecture 2. Linear Classifier and Perceptron (total video:
+45:28, total number of questions:
+19)}\label{lecture-2.-linear-classifier-and-perceptron-total-video-4528-total-number-of-questions-19}}
+
+\begin{quote}
+Objectives
+\end{quote}
+
+\begin{quote}
+\begin{itemize}
+\tightlist
+\item
+  Understand the concepts of Feature vectors and labels, Training set
+  and Test set, Classifier, Training error, Test error, and the Set of
+  classifiers
+\item
+  Understand the mathematical presentation of linear classifiers
+\item
+  Understand the intuitive and formal definition of linear separation
+\item
+  Understand the perceptron algorithm with and without offset
+\end{itemize}
+\end{quote}
+
+\hypertarget{lecture-3-hinge-loss-margin-boundaries-and-regularization-total-video-2417-total-number-of-questions-10}{%
+\subsubsection{Lecture 3 Hinge loss, Margin boundaries and
+Regularization (total video: 24:17, total number of questions:
+10)}\label{lecture-3-hinge-loss-margin-boundaries-and-regularization-total-video-2417-total-number-of-questions-10}}
+
+\begin{quote}
+Objectives
+\end{quote}
+
+\begin{quote}
+\begin{itemize}
+\tightlist
+\item
+  Understand the need for maximizing the margin
+\item
+  Know how to pose linear classification as an optimization problem
+\item
+  Understand hinge loss, margin boundaries and regularization
+\end{itemize}
+\end{quote}
+
+\hypertarget{homework-1-total-number-of-questions-36}{%
+\subsubsection{Homework 1 (total number of questions:
+36)}\label{homework-1-total-number-of-questions-36}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Perceptron Mistakes
+\item
+  Perceptron Performance
+\item
+  Decision Boundaries
+\item
+  Feature Vectors
+\end{enumerate}
+
+\hypertarget{lecture-4.-linear-classification-and-generalization-total-video-2758-total-number-of-questions-11}{%
+\subsubsection{Lecture 4. Linear Classification and Generalization
+(total video: 27:58, total number of questions:
+11)}\label{lecture-4.-linear-classification-and-generalization-total-video-2758-total-number-of-questions-11}}
+
+\begin{quote}
+Objectives
+\end{quote}
+
+\begin{quote}
+\begin{itemize}
+\tightlist
+\item
+  Understanding optimization view of learning
+\item
+  Optimization algorithms - gradient descent, stochastic gradient
+  descent, quadratic program
+\end{itemize}
+\end{quote}
+
+\hypertarget{homework-2-total-number-of-questions-12}{%
+\subsubsection{Homework 2 (total number of questions:
+12)}\label{homework-2-total-number-of-questions-12}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Linear Support Vector Machines
+\item
+  Passive-aggressive algorithm
+\item
+  Perceptron Updates
+\end{enumerate}
+
+\hypertarget{project-1-automatic-review-analyzer-number-of-coding-questions-9-number-of-additional-questions-30}{%
+\subsubsection{Project 1: Automatic Review Analyzer (number of coding
+questions: 9, number of additional questions
+30)}\label{project-1-automatic-review-analyzer-number-of-coding-questions-9-number-of-additional-questions-30}}
+
+\begin{quote}
+The goal of this project is to design a classifier to use for sentiment
+analysis of product reviews. The training set consists of reviews
+written by Amazon customers for various food products. The reviews,
+originally given on a 5 point scale, have been adjusted to a +1 or -1
+scale, representing a positive or negative review, respectively.
+\end{quote}
+
+\begin{quote}
+Python solutions on the given topics were required:
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Hinge Loss
+\item
+  Perceptron Algorithm
+\item
+  Algorithm Discussion
+\item
+  Classification and Accuracy
+\item
+  Parameter Tuning
+\item
+  Feature Engineering
+\end{enumerate}
+
+\hypertarget{unit-2-nonlinear-classification-linear-regression-collaborative-filtering-2-weeks}{%
+\subsection{Unit 2 Nonlinear Classification, Linear regression,
+Collaborative Filtering (2
+weeks)}\label{unit-2-nonlinear-classification-linear-regression-collaborative-filtering-2-weeks}}
+
+\#\#\#Lecture 5. Linear Regression (total video: 50:46, total number of
+questions: 10)
+
+\begin{quote}
+Objectives
+\end{quote}
+
+\begin{quote}
+\begin{itemize}
+\tightlist
+\item
+  Write the training error as least squares criterion for linear
+  regression
+\item
+  Use stochastic gradient descent for fitting linear regression models
+\item
+  Solve closed-form linear regression solution
+\item
+  Identify regularization term and how it changes the solution,
+  generalization
+\end{itemize}
+\end{quote}
+
+\hypertarget{lecture-6.-nonlinear-classification-kernels-total-video-4913-total-number-of-questions-13}{%
+\subsubsection{Lecture 6. Nonlinear Classification: Kernels (total
+video: 49:13, total number of questions:
+13)}\label{lecture-6.-nonlinear-classification-kernels-total-video-4913-total-number-of-questions-13}}
+
+\begin{quote}
+Objectives
+\end{quote}
+
+\begin{quote}
+\begin{itemize}
+\tightlist
+\item
+  Non-linear classifiers from feature maps
+\item
+  Moving from coordinate parameterization to weighting examples
+\item
+  Kernel functions induced from feature maps
+\item
+  Kernel perceptron, kernel linear regression
+\item
+  Properties of kernel functions
+\end{itemize}
+\end{quote}
+
+\hypertarget{lecture-7.-recommender-systems-total-video-3641-total-number-of-questions-9}{%
+\subsubsection{Lecture 7. Recommender Systems (total video: 36:41, total
+number of questions:
+9)}\label{lecture-7.-recommender-systems-total-video-3641-total-number-of-questions-9}}
+
+\begin{quote}
+Objectives
+\end{quote}
+
+\begin{quote}
+\begin{itemize}
+\tightlist
+\item
+  Understand the problem definition and assumptions of recommender
+  systems
+\item
+  Understand the impact of similarity measures in the K-Nearest Neighbor
+  method
+\item
+  Understand the need to impose the low rank assumption in collaborative
+  filtering
+\item
+  Iteratively find values of \(U\) and \(V\) (given \(X = UV^T\) ) in
+  collaborative filtering
+\end{itemize}
+\end{quote}
+
+\hypertarget{homework-3-total-number-of-questions-26}{%
+\subsubsection{Homework 3 (total number of questions:
+26)}\label{homework-3-total-number-of-questions-26}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Collaborative Filtering, Kernels, Linear Regression
+\item
+  Feature Vectors Transformation
+\item
+  Kernels
+\item
+  Linear Regression and Regularization
+\end{enumerate}
+
+\hypertarget{project-2-digit-recognition-part-1-number-of-coding-questions-11-number-of-additional-questions-20}{%
+\subsubsection{Project 2: Digit recognition (Part 1) (number of coding
+questions: 11, number of additional questions
+20)}\label{project-2-digit-recognition-part-1-number-of-coding-questions-11-number-of-additional-questions-20}}
+
+\begin{quote}
+The MNIST database contains binary images of handwritten digits commonly
+used to train image processing systems. The digits were collected from
+among Census Bureau employees and high school students. The database
+contains 60,000 training digits and 10,000 testing digits, all of which
+have been size-normalized and centered in a fixed-size image of 28 × 28
+pixels. Many methods have been tested with this dataset and in this
+project, one will get a chance to experiment with the task of
+classifying these images into the correct digit using some of the
+methods you have learned so far.
+\end{quote}
+
+\begin{quote}
+Python solutions on the given topics were required:
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Support Vector Machine
+\item
+  Multinomial (Softmax) Regression and Gradient Descent
+\item
+  Classification Using Manually Crafted Features
+\item
+  Dimensionality Reduction Using PCA
+\item
+  Cubic Features
+\item
+  Kernel Methods
+\end{enumerate}
+
+\hypertarget{unit-3-neural-networks-2.5-weeks}{%
+\subsection{Unit 3 Neural networks (2.5
+weeks)}\label{unit-3-neural-networks-2.5-weeks}}
+
+\hypertarget{lecture-8.-introduction-to-feedforward-neural-networks}{%
+\subsubsection{Lecture 8. Introduction to Feedforward Neural
+Networks}\label{lecture-8.-introduction-to-feedforward-neural-networks}}
+
+\emph{(total video: 36:08, total number of questions: 17)}
 
 \end{document}

@@ -103,7 +103,7 @@ More about the program could be found [**here**](https://micromasters.mit.edu/ds
 > **Machine Learning** definition was introduced: Machine learning is a discipline aims to design, understand, and apply computer programs that learn from experience (i.e. data) for the purpose of modelling, prediction, and control. Main focus of this lecture is on the prediction, explained through examples on the market value of a stock measured as a function of time or in a self-driving vehicle, one can try to predict whether a collision is about to happen, in a medical context, one might predict the risk of acquiring or getting a recurrence for a disease. There are other types of prediction such as someone liking a movie or not, predicting the properties of an image or in machine translation, translating one sentence from English to Spanish language for example. 
 > **Supervised Learning** was introduced: machine learning tasks are really provided in terms of examples of correct behavior, like putting large number of images into an annotated categories and then automating the process
 of finding the solution to a task, that's illustrated by examples of images, as defining a set of possible mappings depending of an image and a parameter outputting the category of an image. A different value for these parameters will specify a different mapping. The aim is out of all the possible parameters to find the one that agrees the best with the given set of examples.  
-> A Concrete Example of a Supervised Learning Task: Movie Recommender Problem. Each movie has a **feature vector** , $x^{(i)}$, with binary values answering specific questions about a given movie and a as output, $y^{(i)}$, +1 if one liked the movie and -1 if not. This is how one gets a training set of feature vectors (examples) with the associated **labels**. The task is to learn a mapping from those vectors to the labels. This mapping is then tested on the test set hoping that it will predict well the labels. Then naturally **training error** and **test errors** are introduced as a measure how good this mapping, a **classifier** - $h: \ksi  \mapsto {-1, 1}$, performs. The problem can occur if the training error is too small, that could mean possibility of overfiting the classifier to the given data. In that case the test error would be to high. 
+> A Concrete Example of a Supervised Learning Task: Movie Recommender Problem. Each movie has a **feature vector** , $x^{(i)}$, with binary values answering specific questions about a given movie and a as output, $y^{(i)}$, +1 if one liked the movie and -1 if not. This is how one gets a training set of feature vectors (examples) with the associated **labels**. The task is to learn a mapping from those vectors to the labels. This mapping is then tested on the test set hoping that it will predict well the labels. Then naturally **training error** and **test errors** are introduced as a measure how good this mapping, a **classifier** - $h: \chi  \to {-1, 1}$, performs. The problem can occur if the training error is too small, that could mean possibility of overfiting the classifier to the given data. In that case the test error would be to high. 
 > Types of machine learning:
   >- **Supervised learning** - explicitly specify the correct behavior
   >- **Unsupervised learning** - strip the labels, only given the examples, model/find the irregularities in how those examples vary.
@@ -222,3 +222,149 @@ of finding the solution to a task, that's illustrated by examples of images, as 
   4. Dimensionality Reduction Using PCA
   5. Cubic Features
   6. Kernel Methods
+  
+  
+## Unit 3 Neural networks (2.5 weeks)
+
+### Lecture 8. Introduction to Feedforward Neural Networks 
+_(total video - 36:08, total number of questions - 17)_
+
+> **_Objectives_**
+
+  >- Recognize the number of **layers** of a **feedforward neural network** and the number of **units** in each layer
+  >- Write down common **activation functions** such as the hyperbolic tangent function  tanh , and the **rectified linear function (ReLU)** 
+  >- Compute the output of a simple neural network possibly with **hidden layers** given the **weights** and **activation functions** 
+  >- Determine whether data after transformation by some layers is linearly separable, draw decision boundaries given by the weight vectors and use them to help understand the behavior of the network
+  
+  
+### Lecture 9. Feedforward Neural Networks, Back Propagation, and Stochastic Gradient Descent (SGD)
+_(total video - 22:13, total number of questions - 5)_
+
+> **_Objectives_**
+
+  >- Use **back-propagation** and write down **recursive relations** to compute the gradient of the loss function with respect to the weight parameters
+  >- Use the **stochastic descent algorithm** to train a feedforward neural network
+  >- Recognize when a network has **overcapacity**
+  
+### Lecture 10. Recurrent Neural Networks 1
+_(total video - 26:18, total number of questions - 17)_
+
+> **_Objectives_**
+
+  >- Know the difference between feed-forward and recurrent neural networks
+  >- Understand the role of **gating** and **memory cells**
+  >- Understand the process of **encoding** and **decoding**
+  
+  
+### Lecture 11. Recurrent Neural Networks 2
+_(total video - 35:58, total number of questions - 18)_
+
+> **_Objectives_**
+
+  >- Understand Markov Models
+  >- Understand Feature Based Markov Models and Temporal/Sequence Problems
+  >- Understand RNNs for Sequences
+  >- Understand RNN Decoding
+
+
+### Homework 4 
+_(total number of questions: 26)_
+
+  1. Neural Networks
+  2. LSTM
+  3. Backpropagation
+  4. Word Embeddings
+
+  
+  
+### Lecture 12. Convolutional Neural Networks
+_(total video - 23:07, total number of questions - 11)_
+
+> **_Objectives_**
+
+  >- Understand Convolution Neural Networks
+  >- ...
+  
+
+### Project 3: Digit recognition (Part 2) 
+_(number of coding questions - 7, number of additional questions - 8)_
+
+> In this section, we are going to use deep neural networks to perform the same classification task as in previous sections. We will use PyTorch, a python deep learning framework. 
+
+
+## Midterm Exam (1 week)  
+_(total number of questions - 38)_
+
+## Unit 4 Unsupervised Learning (2 weeks)
+
+### Lecture 13. Clustering 1 
+_(total video - 48:58, total number of questions - 21)_
+
+> **_Objectives_**
+
+  >- Understand the definition of **clustering**
+  >- Understand **clustering cost** from different similarity measures
+  >- Understand the **k-means algorithm**
+  
+
+### Lecture 14. Clustering 2
+_(total video - 28:22, total number of questions - 10)_
+
+> **_Objectives_**
+
+  >- Understand the **limitations** of the K-Means Algorithm
+  >- Understand how the **K-Medoids algorithm** is different from the K-Means Algorithm
+  >- Understand the **computational complexity** of the K-Means and the K-Medoids algorithms
+  >- Understand the importance of well-determining the **number of clusters**
+  >- Understand elements that can be supervised in unsupervised learning
+
+
+### Lecture 15. Generative Models 
+_(total video - 53:05, total number of questions - 22)_
+
+> **_Objectives_**
+
+  >- Understand what generative models are and how they work
+  >- Understand estimation and prediction phases of generative models
+  >- Derive a relation connecting generative and discriminative models
+  >- Derive Maximum Likelihood estimates for multinomial, Gaussian generative models
+
+
+### Lecture 16. Mixture Models; EM algorithm
+_(total video - 39:43, total number of questions - 19)_
+
+> **_Objectives_**
+
+  >- Review Maximum Likelihood Estimation (MLE) of mean and variance in Gaussian statistical model
+  >- Define Mixture Models
+  >- Understand and derive ML estimates of mean and variance of Gaussians in an observed Gaussian mixture model
+  >- Understand EM algorithm to estimate mean and variance of Gaussians in an unobserved Gaussian mixture model
+  
+  
+
+### Homework 5 
+_(total number of questions: 32)_
+
+  1. K-means and K-medoids
+  2. Maximum Likelihood Estimation
+  3. EM Algorithm
+
+
+### Project 4: Collaborative Filtering via Gaussian Mixtures 
+_(number of coding questions - 8, number of additional questions - 14)_
+
+> Your task is to build a mixture model for collaborative filtering. You are given a data matrix containing movie ratings made by users where the matrix is extracted from a much larger Netflix database. Any particular user has rated only a small fraction of the movies so the data matrix is only partially filled. The goal is to predict all the remaining entries of the matrix.
+
+
+## Unit 5 Reinforcement Learning (2 weeks)
+
+### Lecture 17. Reinforcement Learning 1
+_(total video - 57:35, total number of questions - 15)_
+
+> **_Objectives_**
+
+  >- Introduction Reinforcement Learning (RL)
+  >- Understand RL terminology 
+  >- Understand utility function, policy, value functions
+  >- Understand Bellman Equations
+  >- Understand value iteration and Q-value iteration
